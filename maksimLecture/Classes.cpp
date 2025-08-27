@@ -3,7 +3,7 @@
 using namespace std;
 
 class A {
-public:
+  public:
     static int countA;
 
     A() :b(0), c(0), a(0) {
@@ -19,11 +19,9 @@ public:
         cout << "destructor ~A() countA:" << --countA << endl;
     }
 
-protected: int b;
-
-private:   int c;
-
-public:    
+    protected: int b;
+    private:   int c;
+  public:    
     int a;
     virtual int sub(int x, int y) {
         cout << " sub(" << x << "," << y << ") " << endl;
@@ -33,7 +31,7 @@ public:
 
 
 class B : public A {
-public:
+  public:
     static int countB;
     int x = 0;
     B():x(0) { 
@@ -45,16 +43,13 @@ public:
     // virtual is optional here if the base class function is virtual
     // then all derived functions become the virtual too
     virtual ~B() noexcept { 
-        cout << " ~B() countB:" << --countB << endl;        //changed to --
+        cout << " ~B() countB:" << ++countB << endl;
     }
     int add(int x) {
         cout << " ~B() countB:" << ++countB << endl;
         int y = x + a;
         y += b;
-
-        return y;       // added return here
     }
-
     // virtual is optional here if the base class function is virtual
     // then all derived functions become the virtual too
     // but override is recomended to indicates that we are know that sub is virtual in A

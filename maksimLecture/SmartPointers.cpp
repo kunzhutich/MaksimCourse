@@ -1,7 +1,6 @@
 // SmartPointer.cpp :
 
 #include <iostream>
-#include <memory>
 #include <vector>
 
 using namespace std;
@@ -10,7 +9,7 @@ class Car;
 class FactoryCar;
 
 class NoCopyOrMove {
-public: 
+  public: 
     NoCopyOrMove(const NoCopyOrMove &) = delete;
     NoCopyOrMove(const NoCopyOrMove&&) = delete;
     NoCopyOrMove& operator=(Car&& from) = delete;
@@ -18,7 +17,7 @@ public:
 };
 
 class Car {
-public:
+  public:
     static int carCount;
     // static function... Factory class;
     static Car createCar(const char* name) {
@@ -27,16 +26,16 @@ public:
         return car;
     }
 
-    static unique_ptr<Car> assemble(const Car& a0, Car& b0) {
-        unique_ptr<Car> car = make_unique<Car>();
+    static std::unique_ptr<Car> assemble(const Car& a0, Car& b0) {
+        std::unique_ptr<Car> car = std::make_unique<Car>();
         car->milledge = a0.milledge + b0.milledge;
         car->price = (a0.price + b0.price) / 2;
         car->setName("AB");
         return car;
     }
 
-    shared_ptr<FactoryCar> madeBy;
-    shared_ptr<string> name;
+    std::shared_ptr<FactoryCar> madeBy;
+    std::shared_ptr<string> name;
     int price;
     int milledge;
     // Default
@@ -86,7 +85,7 @@ public:
 
     bool setName(const char* s) {
         // problem here? what is about if name is pointing to old name?
-        name = make_shared<string>(string(s));
+        name = std::make_shared<string>(std::string(s));
         return true;
     }
 };
