@@ -8,16 +8,7 @@ int A::countA = 0;
 int C::countX = 0;
 
 int main() {
-    Picture picture;
-
-    picture.add(new Rectangle(10, 2));
-    picture.add(new Rectangle(13, 5));
-    picture.add(new Circle(10));
-    picture.draw();
-
-    Picture  topPicture;
-    topPicture.add(&picture);
-    double s = picture.calSquare();
+    Interface::learn();
     //Classes::learn();
     // 
     //SmartPointers::learn();
