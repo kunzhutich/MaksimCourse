@@ -2,9 +2,14 @@
 
 using namespace std;
 
-class A {
+class D {
+public:
+    int x = 0;
+};
+
+class A : virtual public D {
   public:
-    static int countA;
+      static  int countA;
 
     A() :b(0), c(0), a(0) {
         cout << " default ctor: A() countA:" << ++countA << endl;
@@ -29,8 +34,45 @@ class A {
     }
 };
 
+class C : virtual public D {
+public:
+    static  int countX;
 
-class B : public A {
+    C() :b(0), c(0), a(0) {
+        cout << " default ctor: X() countX:" << ++countX << endl;
+    }
+
+    C(const C& from) :b(from.a), c(from.b), a(from.c) {
+        cout << "copy ctor: X() countX:" << ++countX << endl;
+    }
+
+    // it's a good practice to mark destructor as noexcept: destructor must never rise any exception
+    virtual ~C() noexcept {
+        cout << "destructor ~X() countX:" << --countX << endl;
+    }
+
+protected: int b;
+private:   int c;
+public:
+    int a;
+    virtual int sub(int x, int y) {
+        cout << " sub(" << x << "," << y << ") " << endl;
+        return x + y + 10;
+    }
+};
+
+//      A-> 
+//  B ->     D x
+//      C->
+// 
+
+class ID {
+public:
+    virtual int calSquare(int x, int y) = 0;
+    virtual int calPerimeter(void * o) = 0;
+};
+
+class B : public virtual A, public virtual C {
   public:
     static int countB;
     int x = 0;
@@ -47,8 +89,8 @@ class B : public A {
     }
     int add(int x) {
         cout << " ~B() countB:" << ++countB << endl;
-        int y = x + a;
-        y += b;
+        //int y = x + a;
+        //y += b;
     }
     // virtual is optional here if the base class function is virtual
     // then all derived functions become the virtual too
@@ -58,8 +100,6 @@ class B : public A {
         return a - b;
     }
 };
-
-
 
 class Classes {
 public:
@@ -74,8 +114,8 @@ public:
             res = ap->sub(2, 4);
             {
                 // using C-cast is not recomended (B*) compiler and no check are done...
-                B* pB = (B*)a;
-                int sss = pB->x; // will work
+                //B* pB = (B*)a;
+                //int sss = pB->x; // will work
             }
             //
             // using dynamic_cast instead... it will not crash and will return nullptr 
