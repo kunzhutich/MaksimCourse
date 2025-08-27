@@ -10,7 +10,7 @@ public:
     virtual string name() = 0;
 };
 
-class IShap : public IHasName {
+class IShape : public IHasName {
 public:
     virtual void draw() = 0;
     virtual double calSquare() = 0;
@@ -32,7 +32,7 @@ public:
     }
 
 };
-class Rectangle : public Point, public IShap {
+class Rectangle : public Point, public IShape {
 public:
     int _w;
     int _h;
@@ -47,7 +47,7 @@ public:
     virtual double calSquare() { return _w * _h; };
 };
 
-struct Circle : public Point, public IShap  {
+struct Circle : public Point, public IShape  {
 public:
     int _r;
     Circle(int r) : Point(0,0) {
@@ -60,14 +60,14 @@ public:
     virtual double calSquare() { return 3.14158 * _r * _r; };
 };
 
-class Picture : public Point, public IShap {
-    vector<IShap*> _shapes;
+class Picture : public Point, public IShape {
+    vector<IShape*> _shapes;
     string _name;
 public:
     Picture(string name = "picture") : Point(0, 0) {
         _name = name;
     }
-    void add(IShap * shape) {
+    void add(IShape * shape) {
         _shapes.push_back(shape);
     }
     
@@ -76,7 +76,7 @@ public:
     virtual void draw() override {
         cout << "drawing picture " << name() << endl;
         for (int i = 0; i < _shapes.size(); ++i) {
-            IShap* shape = _shapes[i];
+            IShape* shape = _shapes[i];
             cout << "drawing " << shape->name();
             shape->draw();
         }
@@ -85,7 +85,7 @@ public:
     double calSquare() {
         double s = 0;
         for (int i = 0; i < _shapes.size(); ++i) {
-            IShap* shape = _shapes[i];
+            IShape* shape = _shapes[i];
             s += shape->calSquare();
         }
         return s;
