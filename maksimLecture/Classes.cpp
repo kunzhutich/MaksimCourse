@@ -9,7 +9,7 @@ public:
 
 class A : virtual public D {
   public:
-      static  int countA;
+    static  int countA;
 
     A() :b(0), c(0), a(0) {
         cout << " default ctor: A() countA:" << ++countA << endl;

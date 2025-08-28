@@ -1,4 +1,5 @@
 #include <iostream>
+#include <memory>
 
 using namespace std;
 
@@ -15,10 +16,10 @@ public:
 
 class Heap {
 public:
-    Simple *simple;
+    // Simple *simple;
+    shared_ptr<Simple> simple = make_shared<Simple>();
 
     Heap(int x) {
-        simple = new Simple;
         this->simple->x = x;
     }
 };
@@ -76,6 +77,7 @@ int main() {
     cout << "heapB.simple->x = " << heapB.simple->x << endl;
 
     heapB = heapA;  // this is wrong because now there is memory leakage in heap due to heapB's object lost ref count and is just existing in heap
+                    // **** for shared pointer this is fine ****
 
     cout << "B = A... " << endl;
     cout << "heapA.simple->x = " << heapA.simple->x << endl;
