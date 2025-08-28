@@ -90,7 +90,7 @@ public:
         double s = 0;
         for (int i = 0; i < _shapes.size(); ++i) {
             shared_ptr<IShape> shape = _shapes[i];
-            s = shape->calSquare();
+            s += shape->calSquare();
             cout << shape->name() << "'s area is " << s << endl;
         }
         return s;
