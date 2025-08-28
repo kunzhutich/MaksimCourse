@@ -19,8 +19,6 @@ public:
     virtual double calPerimeter() = 0;
 };
 
-
-
 class Point {
     int _x;
     int _y;
@@ -113,7 +111,6 @@ public:
         for (int i = 0; i < _shapes.size(); ++i) {
             shared_ptr<IShape> shape = _shapes[i];
             s += shape->calSquare();
-            // cout << shape->name() << "'s area is " << s << endl;
         }
         return s;
     }
@@ -122,7 +119,6 @@ public:
         double perimeter = 0;
         for (shared_ptr<IShape> shape : _shapes) {
             perimeter += shape->calPerimeter();
-            // cout << shape->name() << "'s perimeter is " << perimeter << endl;
         }
         return perimeter;
     }
@@ -159,21 +155,22 @@ public:
 
 class Interface {
 public:
-    static void learn() {
-        // auto picture = make_shared<Picture>(" A ");
-        // picture->add(make_shared<Rectangle>(10, 2));
-        // picture->add(make_shared<Rectangle>(13, 5));
-        // picture->add(make_shared<Circle>(10));
-        // picture->draw();
+    static void learnPicture() {
+        auto picture = make_shared<Picture>(" A ");
+        picture->add(make_shared<Rectangle>(10, 2));
+        picture->add(make_shared<Rectangle>(13, 5));
+        picture->add(make_shared<Circle>(10));
+        picture->draw();
 
-        // // Picture topPicture("Top");          //question here
-        // // topPicture.add(picture);
-        // double s = picture->calSquare();
-        // cout << "The sum of all squares for picture " << picture->name() << " is " << s << endl;
-        // double per = picture->calPerimeter();
-        // cout << "The sum of all perimeters for picture " << picture->name() << " is " << per << endl;
+        Picture topPicture("Top");
+        topPicture.add(picture);
+        double s = picture->calSquare();
+        cout << "The sum of all squares for picture " << picture->name() << " is " << s << endl;
+        double per = picture->calPerimeter();
+        cout << "The sum of all perimeters for picture " << picture->name() << " is " << per << endl;
+    }
 
-
+    static void learnSpinner() {
         Spinner spin1(3, 5);
         spin1.draw();
         double spin1_square = spin1.calSquare();
