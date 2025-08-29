@@ -171,12 +171,12 @@ public:
 
     }
    
-   Picture& operator=(const Picture& from) {
+    Picture& operator=(const Picture& from) {
        if (this == &from) return *this;
        Point::operator=(from);
        _shapes = from._shapes;
        return *this;
-   }
+    }
 
     virtual string name() override { return _name; }
     
@@ -239,19 +239,23 @@ public:
 
 class Spinner : public Point, public IShape {
     Picture picture;
+    int _r;
+    int _side;
 public:
-    Spinner(int r, int side, int x = 3, int y = 2) : Point(x, y), picture("spinner") {
-        picture.add(make_shared<Circle>(r, 3, 3));
-        picture.add(make_shared<Circle>(r, 1, 1));
-        picture.add(make_shared<Circle>(r, 5, 1));
-        picture.add(make_shared<Triangle>(side, x, y));
+    Spinner(int r, int side, int x = 3, int y = 2) 
+    : Point(x, y), picture("spinner"), _r(r), _side(side) {
+        picture.add(make_shared<Circle>(_r, 3, 3));
+        picture.add(make_shared<Circle>(_r, 1, 1));
+        picture.add(make_shared<Circle>(_r, 5, 1));
+        picture.add(make_shared<Triangle>(_side, x, y));
     }
 
-    Spinner(IShapePtr parent, int r, int side, int x = 3, int y = 2) : Point(parent, x, y), picture("spinner") {
-        picture.add(make_shared<Circle>(r, 3, 3));
-        picture.add(make_shared<Circle>(r, 1, 1));
-        picture.add(make_shared<Circle>(r, 5, 1));
-        picture.add(make_shared<Triangle>(side, x, y));
+    Spinner(IShapePtr parent, int r, int side, int x = 3, int y = 2) 
+    : Point(parent, x, y), picture("spinner"), _r(r), _side(side) {
+        picture.add(make_shared<Circle>(_r, 3, 3));
+        picture.add(make_shared<Circle>(_r, 1, 1));
+        picture.add(make_shared<Circle>(_r, 5, 1));
+        picture.add(make_shared<Triangle>(_side, x, y));
     }
 
     shared_ptr<Circle> getCircle_0()   { return picture.getChildT<Circle>(0); }
@@ -278,7 +282,8 @@ public:
     virtual IShapePtr getParent() override { return Point::getParent(); }
     virtual void setParent(IShapePtr parent) override { Point::setParent(parent); }
     virtual IShapePtr makeDeepCopy(int x, int y) override {
-        auto p = make_shared<Spinner>(Spinner::getParent(), x, y);
+        // auto p = make_shared<Spinner>(Spinner::getParent(), x, y);
+        auto p = make_shared<Spinner>(Spinner::getParent(), this->_r, this->_side, x, y);
         IShapePtr copy = picture.makeDeepCopy(x, y);
         p->picture = *dynamic_pointer_cast<Picture>(copy);
         return p;
@@ -290,6 +295,8 @@ public:
     static void ifTrue(bool condition, string errmsg) {
         if (!condition) {
             cout << errmsg << endl;
+        } else {
+            cout << "check passed" << endl;
         }
     }
 };
@@ -310,6 +317,7 @@ public:
         double per = picture->calPerimeter();
         cout << "The sum of all perimeters for picture " << picture->name() << " is " << per << endl;
     }
+
     static void learnSpinner() {
         Spinner spin1(3, 5);
         spin1.draw();
@@ -326,13 +334,16 @@ public:
         shared_ptr<Spinner> copy = dynamic_pointer_cast<Spinner>(spin1.makeDeepCopy(20, 30));
         Check::ifTrue(copy->getX() == 20, " Error copy->getX() != 20");
         Check::ifTrue(copy->getY() == 30, " Error copy->getY() != 30");
+
         shared_ptr<Circle> circle_0 = copy->getCircle_0();
         shared_ptr<Circle> circle_1 = copy->getCircle_1();
         shared_ptr<Circle> circle_2 = copy->getCircle_2();
         shared_ptr<Triangle> triangle = copy->getTriangle();
         triangle->setSide(100);
         Check::ifTrue(triangle->getSide() == 100, "Error triangle->getSide() == 100");
+        cout << "shared_ptr triangle's side = " << triangle->getSide() << endl;
         // validate that we did deap copy for triange:
         Check::ifTrue(spin1.getTriangle()->getSide() != 100, "deap copy for triange fail: spin1.getTriangle()->getSide() != 4");
+        cout << "spin1's triangle's side = " << spin1.getTriangle()->getSide() << endl;
     }
 };
