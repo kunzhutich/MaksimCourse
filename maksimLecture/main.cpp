@@ -8,7 +8,8 @@
 // int C::countX = 0;
 
 int main() {
-    Interface::learn();
+    Interface::learnPicture();
+    Interface::learnSpinner();
     //Classes::learn();
     // 
     //SmartPointers::learn();
