@@ -1,0 +1,22 @@
+hw
+
+- template initialization
+- investigate templates (fibonachi, factorial,...)
+- study macros
+
+
+- bubble sort
+- other sorts
+
+
+- complexity of insert/delete/find of each container
+- look at all the containers
+-- dynamic array vector
+	fix array 
+	bst map<k, t>
+	hashtable unordered_map<K, T>
+	stack stack<T>
+	pipe queue<T>
+set
+	forward linked list
+	double liked list
