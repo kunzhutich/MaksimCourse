@@ -347,3 +347,13 @@ public:
         cout << "spin1's triangle's side = " << spin1.getTriangle()->getSide() << endl;
     }
 };
+
+class Math {
+public :
+    template <typename T> 
+    static T Max(T a, T b) {
+        if (a > b) return a;
+        return b;
+    }
+
+};
