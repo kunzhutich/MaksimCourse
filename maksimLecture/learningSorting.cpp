@@ -21,6 +21,41 @@ class Sorting {
     }
 };
 
+template <typename T>
+class ForwadLinkList {
+    template <typename T>
+    class Node<T> {
+    public:
+        T data;
+        T* next = nullptr;
+    };
+
+    Node<T> first = nullptr;
+    Node<T> last  = nullptr;
+
+    void add(const T& data) {
+        node = new Node<T>();
+        if (last == nullptr) {
+            last = node;
+        }
+        esle{
+            last->next = node;
+        l   ast = node;
+        }
+    }
+
+    Node<T> pickLast() {
+        return last;
+    }
+    void removeLast() {
+    }
+
+    void reverse() {
+
+    }
+};
+
+
 class Containers {
     void learnVector() {
         auto v = vector<int>();
