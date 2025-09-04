@@ -1,75 +1,78 @@
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
-// template<typename T>
+
+//template<typename T>
 class forwardLinkedList {
+
+    class Node;
+    Node* _head;
+    Node* _tail;
+    int _count;
+
+    //template<typename T>
+    class Node {
+    public:
+        char _data;
+        Node* _next;
+        Node(char data) {
+            _data = data;
+            _next = nullptr;
+        }
+    };
 public:
-    char _node;
-    forwardLinkedList* _next;
+    int getCount() { return _count; }
+    forwardLinkedList() {
+        _head = nullptr;
+        _tail = nullptr;
+    }
+    //forwardLinkedList() : _data('a') , _next(nullptr) {
+   // }
+    void add (char v) {
+        ++_count;
+        auto* node = new Node(v);
+        if (_tail == nullptr) {
+            _head = node;
+            _tail = node;
+            return;
+        }
+        _tail->_next = node;
+        _tail = node;
+    }
 
-    forwardLinkedList() : _node(), _next(nullptr) {}
-    forwardLinkedList(char node) : _node(node), _next(nullptr) {}
-    forwardLinkedList(char node, forwardLinkedList* next) : _node(node), _next(next) {}
+    void reverse() {
+        Node* prev = nullptr;
+        Node* curr = _tail;
+        while (curr) {
+            Node* nxt = curr->_next; // remember the rest
+            curr->_next = prev;      // flip link
+            prev = curr;            // advance prev
+            curr = nxt;             // advance curr
+        }
+        auto* tmp = _head;
+        _head = _tail;
+        _tail = tmp;
+    }
 
+    std::vector<char> toVector() {
+        std::vector<char> add;
+        Node* current = _head;
+        while (current != nullptr) {
+            add.push_back(current->_data);
+            current = current->_next;
+        }
+        return add;
+    }
     void print() {
-        forwardLinkedList* current = this;
-        while (current) {
-            cout << current->_node;
+        Node* current = _head;
+        while (current != nullptr) {
+            cout << current->_data;
             current = current->_next;
         }
         cout << endl;
     }
+
 };
 
-int main() {
-    forwardLinkedList* strList = new forwardLinkedList('h');
-
-    strList->_next = new forwardLinkedList('e');
-    strList->_next->_next = new forwardLinkedList('l');
-    strList->_next->_next->_next = new forwardLinkedList('l');
-    strList->_next->_next->_next->_next = new forwardLinkedList('o');
-
-    strList->print();
-
-
-    forwardLinkedList* reverseList = new forwardLinkedList();
-    forwardLinkedList* p_start = strList;
-    forwardLinkedList* p_end = strList;
-
-    int count = 0;
-    while (p_end->_next != nullptr) {
-        cout << "p_end: " << p_end->_node << endl;
-        p_end = p_end->_next;
-        count++;
-    }
-
-    reverseList = p_end;
-    cout << reverseList->_node << endl;
-
-    while (count >= 0) {
-        if (p_end == strList) {
-            reverseList = p_end;
-            break;
-        }
-
-        cout << "Count = " << count << endl;
-        p_start = strList;
-
-        while (p_start->_next != p_end) {
-            cout << "p_start: " << p_start->_node << "\t";
-            cout << "p_end: " << p_end->_node << endl;
-            p_start = p_start->_next;
-        }
-
-        p_end = p_start;
-        cout << "after p_end = p_start, p_end's node = " << p_end->_node << endl;
-        reverseList->_next = p_end;
-        cout << "reverseList current node = " << reverseList->_node << endl;
-        reverseList = reverseList->_next;
-
-        count--;
-    }
-
-    reverseList->print();
-}
