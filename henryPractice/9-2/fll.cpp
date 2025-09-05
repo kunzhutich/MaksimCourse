@@ -1,5 +1,6 @@
 #include <iostream>
 #include <memory>
+#include <string>
 
 using namespace std;
 
@@ -76,4 +77,14 @@ int main() {
     ch_lst.print();
     ch_lst.reverse();
     ch_lst.print();
+
+    FLL<string> str_lst;
+    for (string str : {"this ", "is ", "that "}) {
+        str_lst.add(str);
+    }
+    str_lst.print();
+    str_lst.reverse();
+    str_lst.print();
+
+    return 0;
 }

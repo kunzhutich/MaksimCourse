@@ -1,0 +1,13 @@
+# 1) configure (you already did this)
+cmake -S . -B build
+
+# 2) build (for Visual Studio generator on Windows)
+cmake --build build --config Debug
+
+# 3) run your app (if you built fll_program)
+.\build\Debug\fll_program.exe
+
+# 4) run tests
+.\build\Debug\fll_tests.exe
+# or via CTest:
+ctest --test-dir build -C Debug --output-on-failure
