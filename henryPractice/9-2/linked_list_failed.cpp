@@ -6,8 +6,8 @@ using namespace std;
 
 //template<typename T>
 class forwardLinkedList {
-
     class Node;
+
     Node* _head;
     Node* _tail;
     int _count;
@@ -43,17 +43,21 @@ public:
     }
 
     void reverse() {
+        // forwardLinkedList* lst = this;
         Node* prev = nullptr;
-        Node* curr = _tail;
+        Node* curr = _head;
+        Node* oldHead = _head;
         while (curr) {
             Node* nxt = curr->_next; // remember the rest
             curr->_next = prev;      // flip link
             prev = curr;            // advance prev
             curr = nxt;             // advance curr
         }
-        auto* tmp = _head;
-        _head = _tail;
-        _tail = tmp;
+        // auto* tmp = _head;
+        // _head = _tail;
+        // _tail = tmp;
+        _head = prev;
+        _tail = oldHead;
     }
 
     std::vector<char> toVector() {

@@ -11,7 +11,11 @@
 
 int learnFLinkList() {
     forwardLinkedList flst;// = new forwardLinkedList();
-    for (char sym : "1234567") {
+    // for (char sym : "1") {
+    //     flst.add(sym);
+    // }
+
+    for (char sym : std::string("1")){
         flst.add(sym);
     }
     
