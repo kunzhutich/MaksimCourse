@@ -1,7 +1,42 @@
-.vscode/settings.json
+# ---- CMake out-of-source builds ----
+build/
+build-*/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+Testing/
+_ctest*
 
-# executables
+# FetchContent deps
+_deps/
+
+# ---- Visual Studio / MSBuild ----
+*.sln
+*.vcxproj*
+*.user
+*.filters
+.vs/
+*.obj
+*.pch
+*.pdb
+*.idb
+*.ilk
+*.tlog
+*.log
+*.lastbuildstate
+
+# ---- Binaries / libs ----
 *.exe
 *.dll
-*.obj
-*.pdb
+*.lib
+*.exp
+
+# ---- Editors / IDEs ----
+.vscode/
+.idea/
+
+# ---- OS noise ----
+*.DS_Store
+Thumbs.db
