@@ -1,78 +1,98 @@
 #include <iostream>
-using namespace std; 
+#include <thread>
+#include <mutex>
+using namespace std;
 
 class A {
-    int H = 0;
+    int A = 0;
 };
 
-class RefCount {
-    int count = 0;
-
-public:
-    void incCount() { ++count; }
-    void decCount() { --count; }
-    int getCount() { return count; }
+class B {
+    int B = 0;
 };
 
-class MySharedPtr {
-    A* _ptr;
-    RefCount* c_ptr;
+template <typename T>
+class ControlBlock {        // control block
+    mutex countMutex;
+
+    T* _ptr;
+    int count = 1;
 
 public:
-    MySharedPtr(A* ptr) : _ptr(ptr), c_ptr(new RefCount()) {
-        c_ptr->incCount();
+    ControlBlock(T* ptr) : _ptr(ptr) {}
+    ~ControlBlock() { delete _ptr; }
+
+    void incCount() {
+        const lock_guard<mutex> lock(countMutex);
+        ++count;
     }
-    MySharedPtr(const MySharedPtr& from) : _ptr(from._ptr), c_ptr(from.c_ptr) {
-        c_ptr->incCount();
+    bool decCount() { 
+        bool shouldDelete = false;
+        {
+            const lock_guard<mutex> lock(countMutex);
+            --count;
+
+            if (count == 0) shouldDelete = true;
+        }
+        if (shouldDelete) delete this;
+
+        return shouldDelete;
+    }
+    int getCount() { 
+        const lock_guard<mutex> lock(countMutex);
+        return count;
+    }
+    // mutex* getMutex() {     //bad practice but kinda ok in this case
+    //     return &countMutex;
+    // }
+};
+
+template<typename T>
+class MySharedPtr {
+    ControlBlock<T>* cb;
+
+public:
+    MySharedPtr(T* ptr) : cb(new ControlBlock<T>(ptr)) {}
+    MySharedPtr(const MySharedPtr& from) : cb(from.cb) {
+        if (cb) cb->incCount();
     }
     MySharedPtr& operator=(MySharedPtr& from) {
         if (this == &from) return *this;
 
-        if (c_ptr != nullptr) {
-            c_ptr->decCount();
-            
-            if (c_ptr->getCount() == 0) {
-                delete _ptr;
-                delete c_ptr;
-                _ptr = nullptr;
-                c_ptr = nullptr;
-            }
+        if(cb->decCount()) {
+            cb = nullptr;
         }
 
-        _ptr = from._ptr;
-        c_ptr = from.c_ptr;
-        c_ptr->incCount();
+        cb = from.cb;
+        cb->incCount();
         return *this;
     }
     ~MySharedPtr() {
-        if (c_ptr != nullptr) {
-            c_ptr->decCount();
-
-            if (c_ptr->getCount() == 0) {
-                delete _ptr;
-                delete c_ptr;
-                _ptr = nullptr;
-                c_ptr = nullptr;
-            }
+        if(cb->decCount()) {
+            delete cb;
+            cb = nullptr;
         }
     }
-
     void getCount() {
-        cout << "Current refCount = " << c_ptr->getCount() << endl;
+        cout << "Current ControlBlock = " << cb->getCount() << endl;
     }
 };
 
 int main() {
     MySharedPtr p1(new A());
-
     {
         MySharedPtr p2 = p1;
-        
+
+        MySharedPtr pB(new B());
+        pB.getCount();
         {
             MySharedPtr p3 = p2;
             p1.getCount(); 
             p2.getCount(); 
             p3.getCount();
+
+            // p2 = pB;
+            pB.getCount();
         }
 
         p1.getCount(); 
