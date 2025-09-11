@@ -6,8 +6,12 @@ thread rase (competing for the same resource)
 - move raw pointer to data inside control block
 - make it tjread safe
 - implement copy semantic for control block
-- 
+-   
 
 
 - read about deadlock (around mutex?)
 
+
+
+- fix circular
+- play with 91 debugger to see where the deadlock is actually located (use step into)
