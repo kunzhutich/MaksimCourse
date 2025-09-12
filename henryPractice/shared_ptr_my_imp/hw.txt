@@ -15,3 +15,13 @@ thread rase (competing for the same resource)
 
 - fix circular
 - play with 91 debugger to see where the deadlock is actually located (use step into)
+
+
+
+- break circular reference the right way
+- read about atomic and use atomic for instanceCount
+- linux epoll read
+- linux threads
+- read rpc ~interprocess communication
+- conditional variables when it comes to threading (threading synchronization) 
+- read about event concept

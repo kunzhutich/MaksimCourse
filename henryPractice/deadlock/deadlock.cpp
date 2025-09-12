@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <atomic>
 using namespace std;
 
 class Parent;
@@ -12,16 +13,29 @@ class Parent;
 class Child : public enable_shared_from_this<Child>{
     mutex cm;
     string _name;
-    shared_ptr<Parent> _parent = nullptr;
-
+    weak_ptr<Parent> _parent;
+    
 public:
+    atomic<int> instanceCount{0};
+    // static int instanceCount;
+
     Child(shared_ptr<Parent> parent, string name) : _parent(parent), _name(name) {
         // parent->addChild(this);
+        // ++instanceCount;
+        instanceCount.fetch_add(1);
+    }
+    ~Child() {
+        // --instanceCount;
+        instanceCount.fetch_sub(1);
     }
 
     shared_ptr<Parent> getParent() {
         lock_guard<mutex> lock_parent(cm);
-        return _parent;
+        if (auto p = _parent.lock()){
+            return p;
+        } else {
+            return nullptr;
+        }
     }
 
     string getName() {
@@ -29,6 +43,9 @@ public:
         return _name;
     }
 
+    int getCount() {
+        return instanceCount;
+    }
 };
 
 class Parent : public enable_shared_from_this<Parent>{
@@ -38,8 +55,18 @@ class Parent : public enable_shared_from_this<Parent>{
     int _age;
     vector<shared_ptr<Child>> _children;
 
+    
 public:
-    Parent(string name, int age) : _name(name), _age(age) {}
+    std::atomic<int> instanceCount{0};
+    // static int instanceCount;
+
+
+    Parent(string name, int age) : _name(name), _age(age) {
+        ++instanceCount;
+    }
+    ~Parent() {
+        --instanceCount;
+    }
     vector<shared_ptr<Child>> getChildren() {
         lock_guard<mutex> lock_children(mp);
         return _children;
@@ -85,44 +112,43 @@ public:
     }
 
     bool testParent() {
-        string parentName;
-        vector<shared_ptr<Child>> kids;
+        lock_guard<mutex> lock_children(mp);
 
-        {
-            lock_guard<mutex> lock_children(mp);
-            parentName = _name;
-            kids = _children;
-        }
-        
-        // for(shared_ptr<Child> ch : _children) { 
-        //     if (ch->getParent()->getName() == _name) {
-        //         return true;
-        //     }
-        // }
-
-        for (shared_ptr<Child> ch : _children) {
+        for(shared_ptr<Child> ch : _children) {
             auto parent = ch->getParent();
-            if (parent != nullptr && parent->getName() == parentName) {
+            if (parent != nullptr && parent->_name == _name) {
                 return true;
             }
         }
 
         return false;
     }
+
+    int getCount() {
+        return instanceCount;
+    }
 };
 
+// int Child::instanceCount = 0;
+// int Parent::instanceCount = 0;
 
 int main() {
-    auto p1 = make_shared<Parent>("Mei", 53);
-    // auto c1 = make_shared<Child>(p1, "Henry");
-    auto c1 = p1->makeChild("Henry");
+    {
+        auto p1 = make_shared<Parent>("Mei", 53);
+        auto c1 = p1->makeChild("Henry");
 
-    bool result = p1->testParent();
-    cout << result;
+        bool result = p1->testParent();
+        cout << result << endl;
 
-    // p1->getChildren();
-    // auto p2 = make_shared<Parent>("Bill Gates", 66);         // WRONG
-    // p2->addChild(c1);
+        // cout << "Instance Count for parent = " << Parent::getCount() << endl;
+        // cout << "Instance Count for child = " << Child::getCount() << endl;
+        
+        cout << "Instance Count for p1 = " << p1->getCount() << endl;
+        cout << "Instance Count for c1 = " << c1->getCount() << endl;
 
-    
+    }
+
+    // cout << "Instance Count for parent = " << Parent::getCount() << endl;
+    // cout << "Instance Count for child = " << Child::getCount() << endl;
+
 }
