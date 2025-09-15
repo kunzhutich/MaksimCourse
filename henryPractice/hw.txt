@@ -25,3 +25,22 @@ thread rase (competing for the same resource)
 - read rpc ~interprocess communication
 - conditional variables when it comes to threading (threading synchronization) 
 - read about event concept
+
+
+- security, ceritficates
+- xss (cross reference) attacks
+- scripting attack
+- symmetric encryption and assymetric encryption
+- x.509 security certificate
+- ca - certificate authority
+- how https, tls are working
+- ssh security protocol
+- OAuth 2.0
+
+
+
+- think about epoll again but with JS
+- implement simple threading synchronization
+- hash sha256 516
+- guid
+- md 5 (not really safe)
