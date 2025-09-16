@@ -41,6 +41,16 @@ thread rase (competing for the same resource)
 
 - think about epoll again but with JS
 - implement simple threading synchronization
-- hash sha256 516
+- hash sha256 512
 - guid
 - md 5 (not really safe)
+
+
+
+- fix pop method
+- keep reading about wait_for and condition_variable
+- line 49 find move+delete instead of copy and delete
+- template specialization
+- emplace_back vs push_back
+
+- gather requirements for use cases of application
