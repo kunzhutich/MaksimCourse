@@ -1,0 +1,56 @@
+read about mutex
+multiple threading 
+thread safety
+thread rase (competing for the same resource)
+
+- move raw pointer to data inside control block
+- make it tjread safe
+- implement copy semantic for control block
+-   
+
+
+- read about deadlock (around mutex?)
+
+
+
+- fix circular
+- play with 91 debugger to see where the deadlock is actually located (use step into)
+
+
+
+- break circular reference the right way
+- read about atomic and use atomic for instanceCount
+- linux epoll read
+- linux threads
+- read rpc ~interprocess communication
+- conditional variables when it comes to threading (threading synchronization) 
+- read about event concept
+
+
+- security, ceritficates
+- xss (cross reference) attacks
+- scripting attack
+- symmetric encryption and assymetric encryption
+- x.509 security certificate
+- ca - certificate authority
+- how https, tls are working
+- ssh security protocol
+- OAuth 2.0
+
+
+
+- think about epoll again but with JS
+- implement simple threading synchronization
+- hash sha256 512
+- guid
+- md 5 (not really safe)
+
+
+
+- fix pop method
+- keep reading about wait_for and condition_variable
+- line 49 find move+delete instead of copy and delete
+- template specialization
+- emplace_back vs push_back
+
+- gather requirements for use cases of application

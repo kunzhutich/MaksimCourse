@@ -3,11 +3,11 @@
 #include <string>
 using namespace std;
 
-vector<int> bubbleSort(vector<int> arr) {
+vector<int> bubbleSort(vector<int>& arr) {
     bool swapped = true;
     int n = arr.size();
 
-    while (swapped) {
+    while (swapped) {   
         swapped = false;
         for (int i = 0; i < n - 1; ++i) {
             if (arr[i] > arr[i + 1]) {
@@ -24,7 +24,7 @@ vector<int> bubbleSort(vector<int> arr) {
     return arr;
 }
 
-vector<int> selectionSort(vector<int> arr) {
+vector<int> selectionSort(vector<int>& arr) {
     for (int i = 0; i < arr.size() - 1; ++i) {
         int smallest = i;
         for (int j = i + 1; j < arr.size(); ++j) {
@@ -41,7 +41,7 @@ vector<int> selectionSort(vector<int> arr) {
     return arr;
 }
 
-vector<int> insertionSort(vector<int> arr) {
+vector<int> insertionSort(vector<int>& arr) {
     for (int i = 1; i < arr.size(); ++i) {
         int key = arr[i];
         int j = i - 1;
@@ -57,8 +57,9 @@ vector<int> insertionSort(vector<int> arr) {
     return arr;
 }
 
-vector<int> merge(vector<int> left, vector<int> right) {
+vector<int> merge(vector<int>& left, vector<int>& right) {
     vector<int> result;
+    result.reserve(left.size() + right.size());
 
     while (!left.empty() && !right.empty()){
         if (left[0] <= right[0]) {
@@ -85,7 +86,7 @@ vector<int> merge(vector<int> left, vector<int> right) {
     return result;
 }
 
-vector<int> mergeSort(vector<int> arr) {
+vector<int> mergeSort(vector<int>& arr) {
     int n = arr.size();
     if (n <= 1) {
         return arr;
@@ -107,17 +108,16 @@ vector<int> mergeSort(vector<int> arr) {
     return merge(half1, half2);
 }
 
-vector<int> qSort(vector<int> less, vector<int> equals, vector<int> greater) {
+vector<int> qSort(vector<int>& less, vector<int>& equals, vector<int>& greater) {
     vector<int> result;
-    
+    result.reserve(less.size() + equals.size() + greater.size());
+
     for(int num : less) {
         result.push_back(num);
     }
-
     for(int num : equals) {
         result.push_back(num);
     }
-
     for (int num : greater) {
         result.push_back(num);
     }
@@ -125,7 +125,7 @@ vector<int> qSort(vector<int> less, vector<int> equals, vector<int> greater) {
     return result;
 }
 
-vector<int> quickSort(vector<int> arr) {
+vector<int> quickSort(vector<int>& arr) {
     int n = arr.size();
     if (n <= 1) {
         return arr;
@@ -153,7 +153,7 @@ vector<int> quickSort(vector<int> arr) {
     return qSort(less, equals, greater);
 }
 
-string print(vector<int> vector) {
+string print(const vector<int>& vector) {
     string str = "{";
     for (int i = 0; i < vector.size(); ++i) {
         str += to_string(vector[i]);

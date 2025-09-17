@@ -43,8 +43,8 @@ public:
         return _name;
     }
 
-    int getCount() {
-        return instanceCount;
+   int getCount() {
+        return instanceCount.load();
     }
 };
 
